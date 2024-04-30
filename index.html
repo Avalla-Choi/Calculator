@@ -46,7 +46,9 @@
             }
 
             print() {
-                return ` >>> ${this.hour}:${this.min}`;
+                // 분 단위가 한 자리수일 때 0을 붙여서 출력
+                const formattedMin = this.min < 10 ? `0${this.min}` : `${this.min}`;
+                return ` >>> ${this.hour}:${formattedMin}`;
             }
 
             static cal_by_ttl(ttl) {
