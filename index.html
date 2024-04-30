@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Calculator</title>
+    <style>
+        input[type="text"] {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Time Calculator</h1>
+
+    <div id="modeSelection">
+        <label for="mode">모드 선택:</label>
+        <select id="mode">
+            <option value="1">모드 1: 근무한 시간 계산</option>
+            <option value="2">모드 2: 퇴근 시간 계산</option>
+            <option value="3">모드 3: 채워야 할 시간 계산</option>
+        </select>
+    </div>
+
+    <div id="inputs">
+        <div id="input1">
+            <label for="time1">출근 시간:</label>
+            <input type="text" id="time1" placeholder="예: 9:00">
+        </div>
+        <div id="input2" style="display: none;">
+            <label for="time2">퇴근 시간:</label>
+            <input type="text" id="time2" placeholder="예: 18:00">
+        </div>
+        <div id="input3" style="display: none;">
+            <label for="delta">채워야 할 시간:</label>
+            <input type="text" id="delta" placeholder="예: 2:00">
+        </div>
+    </div>
+
+    <button onclick="calculate()">계산하기</button>
+
+    <div id="results"></div>
+
+    <script>
+        function calculate() {
+            var mode = document.getElementById("mode").value;
+            var time1 = document.getElementById("time1").value;
+            var time2 = document.getElementById("time2").value;
+            var delta = document.getElementById("delta").value;
+
+            var result = "";
+
+            if (mode == "1") {
+                result = calculateWorkingTime(time1, time2);
+            } else if (mode == "2") {
+                result = calculateEndTime(time1);
+            } else if (mode == "3") {
+                result = calculateEndTimeWithDelta(time1, delta);
+            }
+
+            document.getElementById("results").innerHTML = result;
+        }
+
+        function calculateWorkingTime(time1, time2) {
+            // 근무한 시간 계산 로직 구현
+            return "근무한 시간: 구현 예정";
+        }
+
+        function calculateEndTime(time1) {
+            // 퇴근 시간 계산 로직 구현
+            return "퇴근 시간: 구현 예정";
+        }
+
+        function calculateEndTimeWithDelta(time1, delta) {
+            // 채워야 할 시간을 고려한 퇴근 시간 계산 로직 구현
+            return "퇴근 시간: 구현 예정";
+        }
+
+        document.getElementById("mode").addEventListener("change", function() {
+            var mode = this.value;
+            if (mode == "1") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "block";
+                document.getElementById("input3").style.display = "none";
+            } else if (mode == "2") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "none";
+            } else if (mode == "3") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
