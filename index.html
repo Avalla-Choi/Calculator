@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Calculator</title>
-    <style>
-        input[type="text"] {
-            width: 100px;
-        }
-    </style>
 </head>
 <body>
     <h1>Time Calculator</h1>
@@ -42,6 +37,47 @@
     <div id="results"></div>
 
     <script>
+        class time {
+            constructor(h, m) {
+                this.hour = h;
+                this.min = m;
+                this.ttl = 60 * h + m;
+            }
+
+            print() {
+                return ` >>> ${this.hour}:${this.min}`;
+            }
+
+            static cal_by_ttl(ttl) {
+                return new time(Math.floor(ttl / 60), ttl % 60);
+            }
+
+            static cal_working(time1, time2) {
+                let ttl = time2.ttl - time1.ttl;
+                if ((ttl >= 60 * 4 + 30) && (ttl < 60 * 9)) {
+                    ttl -= 30;
+                } else if (ttl >= 60 * 9) {
+                    ttl -= 60;
+                }
+                return time.cal_by_ttl(ttl);
+            }
+
+            static cal_to_go(time_1, delta) {
+                let ttl = time_1.ttl + delta.ttl;
+                if ((delta.ttl >= 60 * 4 + 30) && (delta.ttl < 60 * 8 + 30)) {
+                    ttl += 30;
+                } else if (delta.ttl >= 60 * 8 + 30) {
+                    ttl += 60;
+                }
+                return time.cal_by_ttl(ttl);
+            }
+
+            static input_time(timeform) {
+                let [h, m] = timeform.split(":").map(Number);
+                return new time(h, m);
+            }
+        }
+
         function calculate() {
             var mode = document.getElementById("mode").value;
             var time1 = document.getElementById("time1").value;
@@ -51,29 +87,14 @@
             var result = "";
 
             if (mode == "1") {
-                result = calculateWorkingTime(time1, time2);
+                result = time.cal_working(time.input_time(time1), time.input_time(time2)).print();
             } else if (mode == "2") {
-                result = calculateEndTime(time1);
+                result = time.cal_by_ttl(time.input_time(time1).ttl + new time(8, 59).ttl).print();
             } else if (mode == "3") {
-                result = calculateEndTimeWithDelta(time1, delta);
+                result = time.cal_to_go(time.input_time(time1), time.input_time(delta)).print();
             }
 
-            document.getElementById("results").innerHTML = result;
-        }
-
-        function calculateWorkingTime(time1, time2) {
-            // 근무한 시간 계산 로직 구현
-            return "근무한 시간: 구현 예정";
-        }
-
-        function calculateEndTime(time1) {
-            // 퇴근 시간 계산 로직 구현
-            return "퇴근 시간: 구현 예정";
-        }
-
-        function calculateEndTimeWithDelta(time1, delta) {
-            // 채워야 할 시간을 고려한 퇴근 시간 계산 로직 구현
-            return "퇴근 시간: 구현 예정";
+            document.getElementById("results").innerText = result;
         }
 
         document.getElementById("mode").addEventListener("change", function() {
