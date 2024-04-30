@@ -6,7 +6,7 @@
     <title>Time Calculator</title>
 </head>
 <body>
-    <h1>Time Calculator</h1>
+    <h1>🎀 근무시간 계산기 🎀</h1>
 
     <div id="modeSelection">
         <label for="mode">모드 선택:</label>
@@ -19,7 +19,7 @@
     </div>
 
     <div id="inputs">
-        <div id="input1">
+        <div id="input1" style="display: none;">
             <label for="time1">출근 시간:</label>
             <input type="text" id="time1" placeholder="예: 9:00">
         </div>
@@ -38,7 +38,91 @@
     <div id="results"></div>
 
     <script>
-        // JavaScript 코드는 동일합니다.
+        class time {
+            constructor(h, m) {
+                this.hour = h;
+                this.min = m;
+                this.ttl = 60 * h + m;
+            }
+
+            print() {
+                return ` >>> ${this.hour}:${this.min}`;
+            }
+
+            static cal_by_ttl(ttl) {
+                return new time(Math.floor(ttl / 60), ttl % 60);
+            }
+
+            static cal_working(time1, time2) {
+                let ttl = time2.ttl - time1.ttl;
+                if ((ttl >= 60 * 4 + 30) && (ttl < 60 * 9)) {
+                    ttl -= 30;
+                } else if (ttl >= 60 * 9) {
+                    ttl -= 60;
+                }
+                return time.cal_by_ttl(ttl);
+            }
+
+            static cal_to_go(time_1, delta) {
+                let ttl = time_1.ttl + delta.ttl;
+                if ((delta.ttl >= 60 * 4 + 30) && (delta.ttl < 60 * 8 + 30)) {
+                    ttl += 30;
+                } else if (delta.ttl >= 60 * 8 + 30) {
+                    ttl += 60;
+                }
+                return time.cal_by_ttl(ttl);
+            }
+
+            static input_time(timeform) {
+                let [h, m] = timeform.split(":").map(Number);
+                return new time(h, m);
+            }
+        }
+
+        function calculate() {
+            var mode = document.getElementById("mode").value;
+            var time1 = document.getElementById("time1").value;
+            var time2 = document.getElementById("time2").value;
+            var delta = document.getElementById("delta").value;
+
+            var result = "";
+
+            if (mode == "1") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "block";
+                document.getElementById("input3").style.display = "none";
+                result = time.cal_working(time.input_time(time1), time.input_time(time2)).print();
+            } else if (mode == "2") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "none";
+                result = time.cal_by_ttl(time.input_time(time1).ttl + new time(8, 59).ttl).print();
+            } else if (mode == "3") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "block";
+                result = time.cal_to_go(time.input_time(time1), time.input_time(delta)).print();
+            }
+
+            document.getElementById("results").innerText = result;
+        }
+
+        document.getElementById("mode").addEventListener("change", function() {
+            var mode = this.value;
+            if (mode == "1") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "block";
+                document.getElementById("input3").style.display = "none";
+            } else if (mode == "2") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "none";
+            } else if (mode == "3") {
+                document.getElementById("input1").style.display = "block";
+                document.getElementById("input2").style.display = "none";
+                document.getElementById("input3").style.display = "block";
+            }
+        });
     </script>
 </body>
 </html>
